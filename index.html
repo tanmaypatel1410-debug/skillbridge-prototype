@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusConnect - Integrated Multi-Dashboard Platform</title>
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Modern Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- =========================================================
+       TOP HEADER NAVBAR (ALL DASHBOARD OPTIONS IN DROPDOWN)
+       ========================================================= -->
+  <header class="top-navbar">
+    
+    <!-- Brand Logo -->
+    <div class="nav-brand">
+      <div class="brand-logo">
+        <img src="logo.jpeg" alt="Logo" style="height:34px;" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fa-solid fa-graduation-cap\' style=\'color:var(--primary-cyan); font-size:1.6rem;\'></i>';">
+      </div>
+      <div>
+        <div class="brand-title">Campus<span>Connect</span></div>
+        <div class="brand-sub">Your Career • Our Mission</div>
+      </div>
+    </div>
+
+    <!-- Center Navigation Links -->
+    <nav class="nav-links-center">
+      <a class="nav-link active" data-view="panel-landing"><i class="fa-solid fa-house"></i> Home</a>
+      <a class="nav-link" onclick="document.getElementById('why-section').scrollIntoView({behavior:'smooth'})">About</a>
+      <a class="nav-link" onclick="document.getElementById('why-section').scrollIntoView({behavior:'smooth'})">Features</a>
+      <a class="nav-link" onclick="alert('Support Email: contact@campusconnect.edu | Help Desk Live 24/7')">Support</a>
+      
+      <!-- Dashboards Dropdown Menu (All Dashboard Options in Top Navbar) -->
+      <div class="nav-dropdown" id="dashboardsDropdown">
+        <button class="nav-dropdown-btn">
+          <i class="fa-solid fa-gauge-high"></i> Dashboards <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" data-view="panel-student-dashboard"><i class="fa-solid fa-graduation-cap"></i> Student Dashboard</a>
+          <a class="dropdown-item" data-view="panel-admin-dashboard"><i class="fa-solid fa-landmark"></i> College Admin Cell</a>
+          <a class="dropdown-item" data-view="panel-hr-dashboard"><i class="fa-solid fa-briefcase"></i> Industry HR Portal</a>
+          <a class="dropdown-item" data-view="panel-profile"><i class="fa-solid fa-user"></i> My Profile</a>
+          <a class="dropdown-item" data-view="panel-skill-gap"><i class="fa-solid fa-chart-pie"></i> Skill Gap Analysis</a>
+          <a class="dropdown-item" data-view="panel-roadmap"><i class="fa-solid fa-route"></i> Learning Roadmap</a>
+          <a class="dropdown-item" data-view="panel-applications"><i class="fa-solid fa-file-lines"></i> My Applications</a>
+          <a class="dropdown-item" data-view="panel-coding"><i class="fa-solid fa-code"></i> Coding Practice</a>
+          <a class="dropdown-item" data-view="panel-aptitude"><i class="fa-solid fa-brain"></i> Aptitude Test</a>
+          <a class="dropdown-item" data-view="panel-resume"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Resume Builder</a>
+          <a class="dropdown-item" data-view="panel-calendar"><i class="fa-solid fa-calendar-days"></i> Placement Calendar</a>
+          <a class="dropdown-item" data-view="panel-college-students"><i class="fa-solid fa-users"></i> College Students</a>
+          <a class="dropdown-item" data-view="panel-company-eligible"><i class="fa-solid fa-user-check"></i> Eligible Students</a>
+          <a class="dropdown-item" data-view="panel-create-opportunity"><i class="fa-solid fa-plus-circle"></i> Create Opportunity</a>
+          <a class="dropdown-item" data-view="panel-notifications"><i class="fa-solid fa-gear"></i> Settings</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Right Header Actions -->
+    <div class="nav-actions-right">
+      <div id="apiStatusBadge" class="api-status-badge">
+        <i class="fa-solid fa-server"></i> API: <span id="apiStatusText">Online</span>
+      </div>
+
+      <div class="auth-btn-group" id="loggedOutBtnGroup">
+        <button class="btn-nav-outline" onclick="document.querySelector('[data-view=\'panel-auth\']').click();"><i class="fa-solid fa-user"></i> Login</button>
+        <button class="btn-nav-gold" onclick="document.querySelector('[data-view=\'panel-auth\']').click();"><i class="fa-solid fa-user-plus"></i> Register</button>
+      </div>
+
+      <div class="user-profile-group" id="loggedInUserGroup" style="display:none; align-items:center; gap:12px;">
+        <span style="color:#fff; font-weight:700; font-size:0.9rem;" id="navUserName">Tanmay Patel</span>
+        <button class="btn-nav-outline" id="navLogoutBtn" style="border-color:#f87171; color:#f87171; padding:6px 14px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- =========================================================
+       MAIN CONTENT CONTAINER
+       ========================================================= -->
+  <div class="app-layout">
+  <aside class="left-sidebar" id="leftSidebar">
+    <div class="sidebar-header">
+      <h2>DASHBOARDS</h2>
+      <button id="sidebarToggleBtn" class="sidebar-toggle-btn"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-link active" data-view="panel-landing"><i class="fa-solid fa-house"></i> Home</a>
+      <a class="sidebar-link" data-view="panel-student-dashboard"><i class="fa-solid fa-graduation-cap"></i> Student Dashboard</a>
+      <a class="sidebar-link" data-view="panel-admin-dashboard"><i class="fa-solid fa-landmark"></i> College Admin Cell</a>
+      <a class="sidebar-link" data-view="panel-hr-dashboard"><i class="fa-solid fa-briefcase"></i> Industry HR Portal</a>
+      <a class="sidebar-link" data-view="panel-profile"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a class="sidebar-link" data-view="panel-skill-gap"><i class="fa-solid fa-chart-pie"></i> Skill Gap Analysis</a>
+      <a class="sidebar-link" data-view="panel-roadmap"><i class="fa-solid fa-route"></i> Learning Roadmap</a>
+      <a class="sidebar-link" data-view="panel-applications"><i class="fa-solid fa-file-lines"></i> My Applications</a>
+      <a class="sidebar-link" data-view="panel-coding"><i class="fa-solid fa-code"></i> Coding Practice</a>
+      <a class="sidebar-link" data-view="panel-aptitude"><i class="fa-solid fa-brain"></i> Aptitude Test</a>
+      <a class="sidebar-link" data-view="panel-resume"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Resume Builder</a>
+      <a class="sidebar-link" data-view="panel-calendar"><i class="fa-solid fa-calendar-days"></i> Placement Calendar</a>
+      <a class="sidebar-link" data-view="panel-college-students"><i class="fa-solid fa-users"></i> College Students</a>
+      <a class="sidebar-link" data-view="panel-company-eligible"><i class="fa-solid fa-user-check"></i> Eligible Students</a>
+      <a class="sidebar-link" data-view="panel-create-opportunity"><i class="fa-solid fa-plus-circle"></i> Create Opportunity</a>
+      <a class="sidebar-link" data-view="panel-notifications"><i class="fa-solid fa-gear"></i> Settings & Alerts</a>
+      <a class="sidebar-link" data-view="panel-auth"><i class="fa-solid fa-user"></i> Login / Register</a>
+    </nav>
+  </aside>
+  <main class="main-content-area">
+
+    <!-- ==================== VIEW 1: LANDING / HOME (EXACT IMAGE DESIGN) ==================== -->
+    <section class="view-panel active" id="panel-landing">
+      
+      <!-- HERO LANDING SECTION -->
+      <div class="hero-landing-wrapper">
+
+        <!-- Left Text & Role Cards Column -->
+        <div class="hero-text-side">
+          <div class="hero-pill-tag">
+            <i class="fa-solid fa-graduation-cap"></i> Your Gateway to a Brighter Future
+          </div>
+
+          <h1 class="hero-main-heading">
+            Your Campus Placement<br>
+            <span class="cyan-glow">Journey</span> <span class="gold-glow">Starts Here</span>
+          </h1>
+
+          <p class="hero-sub-description">
+            CampusConnect is a unified platform that connects students, colleges and companies for a smarter, faster and easier placement experience.
+          </p>
+
+          <div class="role-cards-row">
+            <div class="role-card-mini">
+              <i class="fa-solid fa-user-graduate"></i>
+              <div class="role-card-title">For Students</div>
+              <div class="role-card-desc">Learn • Prepare • Get Placed</div>
+            </div>
+            <div class="role-card-mini">
+              <i class="fa-solid fa-landmark"></i>
+              <div class="role-card-title">For Colleges</div>
+              <div class="role-card-desc">Track • Support • Grow</div>
+            </div>
+            <div class="role-card-mini">
+              <i class="fa-solid fa-briefcase"></i>
+              <div class="role-card-title">For Companies</div>
+              <div class="role-card-desc">Find • Hire • Build</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:16px; margin-bottom:24px;">
+            <button class="btn-nav-gold" style="padding:12px 28px; font-size:1rem;" onclick="document.querySelector('[data-view=\'panel-auth\']').click();">
+              <i class="fa-solid fa-user"></i> Login <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button class="btn-outline-cyan" style="width:auto; padding:12px 28px;" onclick="document.querySelector('[data-view=\'panel-auth\']').click();">
+              <i class="fa-solid fa-user-plus"></i> Register Now
+            </button>
+          </div>
+
+          <div style="font-family:'Brush Script MT', cursive, sans-serif; font-size:1.8rem; color:#ffb700;">
+            Better Skills. Bigger Opportunities.
+          </div>
+        </div>
+
+        <!-- Right Floating Auth Card -->
+        <div class="hero-auth-card">
+          <div class="auth-card-header">
+            <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+              <img src="logo.jpeg" alt="Logo" style="height:32px;" onerror="this.style.display='none';">
+              <span style="font-size:1.4rem; font-weight:800; color:#fff;">Campus<span style="color:#ffb700;">Connect</span></span>
+            </div>
+            <div style="font-size:0.75rem; color:var(--primary-cyan); margin-top:2px;">Your Career • Our Mission</div>
+
+            <div class="auth-card-title">Welcome Back!</div>
+            <div class="auth-card-subtitle">Login to your account to continue</div>
+          </div>
+
+          <form id="heroLoginForm">
+            <div class="auth-input-group">
+              <i class="fa-regular fa-envelope"></i>
+              <input type="email" id="heroEmail" class="auth-input-field" value="tanmay.patel@campusconnect.edu" placeholder="Email or Roll Number" required>
+            </div>
+
+            <div class="auth-input-group">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="heroPassword" class="auth-input-field" value="Password123" placeholder="Password" required>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; font-size:0.85rem; color:var(--text-muted);">
+              <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                <input type="checkbox" checked style="accent-color:#00e5ff;"> Remember me
+              </label>
+              <a href="#forgot" onclick="alert('Demo reset link sent to email.')" style="color:#00e5ff; text-decoration:none;">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-cyan-glow" style="margin-bottom:16px;">
+              Login <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+            <div style="text-align:center; color:var(--text-muted); font-size:0.8rem; margin-bottom:16px;">─── OR ───</div>
+
+            <button type="button" class="btn-outline-cyan" onclick="document.querySelector('[data-view=\'panel-auth\']').click();">
+              <i class="fa-solid fa-user-plus"></i> Register Now
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- SECTION 2: WHY CAMPUSCONNECT? STAT CARDS -->
+      <div id="why-section" class="why-container" style="margin-top: 50px;">
+        <div class="why-header">
+          <div style="flex:1;">
+            <div style="color:var(--primary-cyan); font-weight:700; font-size:0.9rem; text-transform:uppercase; margin-bottom:8px;">Why CampusConnect?</div>
+            <h2 style="font-size:2.2rem; font-weight:800; color:#fff; margin-bottom:12px;">
+              Everything You Need for a <span style="color:#00e5ff;">Successful Career</span>
+            </h2>
+            <p style="color:var(--text-muted); max-width:480px; margin-bottom:24px;">
+              From skill development to final placement, we provide every tool you need to achieve your dream job.
+            </p>
+            <button class="btn-outline-cyan" style="width:auto; padding:12px 24px;" onclick="document.getElementById('recruiterGrid').scrollIntoView({behavior:'smooth'})">
+              Explore Features <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="why-stats-grid">
+            <div class="stat-box-blue">
+              <i class="fa-solid fa-user-tie" style="color:#00e5ff;"></i>
+              <div class="stat-num">500+</div>
+              <div class="stat-label">Top Companies</div>
+            </div>
+            <div class="stat-box-blue">
+              <i class="fa-solid fa-briefcase" style="color:#c084fc;"></i>
+              <div class="stat-num">10,000+</div>
+              <div class="stat-label">Placement Drives</div>
+            </div>
+            <div class="stat-box-blue">
+              <i class="fa-solid fa-graduation-cap" style="color:#34d399;"></i>
+              <div class="stat-num">1,000,000+</div>
+              <div class="stat-label">Students Registered</div>
+            </div>
+            <div class="stat-box-blue">
+              <i class="fa-solid fa-landmark" style="color:#fbbf24;"></i>
+              <div class="stat-num">200+</div>
+              <div class="stat-label">Partner Colleges</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: TOP RECRUITING COMPANIES -->
+      <div style="margin-top: 50px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <h2 style="font-size: 1.5rem; font-weight: 700; color:#fff;">Top Recruiting Companies</h2>
+          <a href="#all-companies" style="color:#00e5ff; font-weight:600; text-decoration:none;">View All <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="recruiter-grid" id="recruiterGrid">
+          <!-- Populated live via API from /api/v1/companies -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== LOGIN & REGISTRY DASHBOARD ==================== -->
+    <section class="view-panel" id="panel-auth">
+      <div style="max-width: 520px; margin: 20px auto; background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-glow);">
+        
+        <div style="display:flex; justify-content:center; gap:16px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 14px;">
+          <button id="authTabLoginBtn" class="btn-search active" style="padding: 8px 24px;">Login Portal</button>
+          <button id="authTabRegisterBtn" class="btn-search" style="padding: 8px 24px; background:transparent; border: 1px solid var(--border-color);">Register Account</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm" style="display:block;">
+          <h3 style="font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:6px;"><i class="fa-solid fa-right-to-bracket" style="color:var(--primary-cyan);"></i> Account Login</h3>
+          <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:20px;">Connect directly to FastAPI Backend Database</p>
+
+          <div style="margin-bottom:16px;">
+            <label style="display:block; margin-bottom:6px; font-weight:600; color:#fff;">Email Address:</label>
+            <input type="email" id="loginEmail" value="tanmay.patel@campusconnect.edu" required style="width:100%; background:#070b19; color:#fff; padding:12px; border-radius:8px; border:1px solid var(--border-color);">
+          </div>
+
+          <div style="margin-bottom:20px;">
+            <label style="display:block; margin-bottom:6px; font-weight:600; color:#fff;">Password:</label>
+            <input type="password" id="loginPassword" value="Password123" required style="width:100%; background:#070b19; color:#fff; padding:12px; border-radius:8px; border:1px solid var(--border-color);">
+          </div>
+
+          <button type="submit" style="width:100%; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue)); color:#fff; border:none; padding:14px; border-radius:8px; font-weight:700; cursor:pointer; font-size:1rem; margin-bottom:16px;">
+            <i class="fa-solid fa-lock"></i> Login via Backend API (/api/v1/auth/login)
+          </button>
+
+          <div style="display:flex; gap:10px;">
+            <button type="button" id="btnStudentDemoLogin" style="flex:1; background:rgba(59, 130, 246, 0.2); color:#60a5fa; border:1px solid #3b82f6; padding:8px; border-radius:6px; font-size:0.8rem; cursor:pointer; font-weight:600;">Student Demo</button>
+            <button type="button" id="btnAdminDemoLogin" style="flex:1; background:rgba(245, 158, 11, 0.2); color:#fbbf24; border:1px solid #f59e0b; padding:8px; border-radius:6px; font-size:0.8rem; cursor:pointer; font-weight:600;">Admin Demo</button>
+          </div>
+        </form>
+
+        <!-- REGISTER FORM -->
+        <form id="registerForm" style="display:none;">
+          <h3 style="font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:6px;"><i class="fa-solid fa-user-plus" style="color:var(--accent-green);"></i> Student Registration</h3>
+          <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:20px;">Create a new student profile in SQLite</p>
+
+          <div style="margin-bottom:14px;">
+            <label style="display:block; margin-bottom:4px; font-size:0.85rem; color:#fff;">Full Name:</label>
+            <input type="text" id="regFullName" placeholder="e.g. Tanmay Patel" required style="width:100%; background:#070b19; color:#fff; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block; margin-bottom:4px; font-size:0.85rem; color:#fff;">Email Address:</label>
+            <input type="email" id="regEmail" placeholder="student@campusconnect.edu" required style="width:100%; background:#070b19; color:#fff; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block; margin-bottom:4px; font-size:0.85rem; color:#fff;">Password:</label>
+            <input type="password" id="regPassword" placeholder="Password123" required style="width:100%; background:#070b19; color:#fff; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+          </div>
+          <div style="display:flex; gap:10px; margin-bottom:14px;">
+            <div style="flex:1;">
+              <label style="display:block; margin-bottom:4px; font-size:0.85rem; color:#fff;">Branch:</label>
+              <input type="text" id="regBranch" placeholder="CSE" style="width:100%; background:#070b19; color:#fff; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+            </div>
+            <div style="flex:1;">
+              <label style="display:block; margin-bottom:4px; font-size:0.85rem; color:#fff;">CGPA:</label>
+              <input type="number" step="0.01" id="regCgpa" placeholder="8.5" style="width:100%; background:#070b19; color:#fff; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+            </div>
+          </div>
+
+          <button type="submit" style="width:100%; background: linear-gradient(135deg, var(--accent-green), var(--primary-cyan)); color:#fff; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer; font-size:1rem;">
+            <i class="fa-solid fa-check-circle"></i> Register Student Account
+          </button>
+        </form>
+
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: STUDENT DASHBOARD ==================== -->
+    <section class="view-panel" id="panel-student-dashboard">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
+        <div>
+          <h2 style="font-size: 1.6rem; font-weight: 800;">Welcome back, <span class="gradient-text">Tanmay Patel!</span></h2>
+          <p style="color: var(--text-muted);">Keep pushing your limits, the best is yet to come!</p>
+        </div>
+        <span class="tag tag-eligibility" style="font-size: 0.9rem; padding: 6px 14px;">CGPA: 8.56 (CSE)</span>
+      </div>
+
+      <div class="dashboard-grid-4">
+        <div class="stat-card">
+          <div class="stat-card-title">CGPA</div>
+          <div class="stat-card-val">8.56</div>
+          <div class="stat-card-sub">Semester 6 - CSE</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">Placement Readiness</div>
+          <div class="stat-card-val" style="color: var(--primary-cyan);">78%</div>
+          <div class="stat-card-sub">High Match Rate</div>
+        </div>
+        <div class="stat-card" style="border-color: var(--primary-blue);">
+          <div class="stat-card-title">Next Interview</div>
+          <div class="stat-card-val" style="font-size: 1.2rem; color: #60a5fa;">TCS Drive</div>
+          <div class="stat-card-sub" style="color:#fff;">16 Jun 2026 - 10:00 AM</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">Active Applications</div>
+          <div class="stat-card-val" style="color: var(--accent-amber);">5</div>
+          <div class="stat-card-sub">2 Shortlisted</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 3: ADMIN / COLLEGE DASHBOARD ==================== -->
+    <section class="view-panel" id="panel-admin-dashboard">
+      <div style="margin-bottom: 24px;">
+        <h2 style="font-size: 1.6rem; font-weight: 800;"><i class="fa-solid fa-graduation-cap" style="color:var(--primary-cyan);"></i> XYZ College of Engineering</h2>
+        <p style="color: var(--text-muted);">Placement Cell Executive Dashboard</p>
+      </div>
+
+      <div class="dashboard-grid-4">
+        <div class="stat-card">
+          <div class="stat-card-title">Total Students</div>
+          <div class="stat-card-val">1,250</div>
+          <div class="stat-card-sub">Batch 2026</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">Placed Students</div>
+          <div class="stat-card-val" style="color: var(--accent-green);">860</div>
+          <div class="stat-card-sub">68.8% Placed Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">On Process</div>
+          <div class="stat-card-val" style="color: var(--accent-amber);">210</div>
+          <div class="stat-card-sub">In Drive Screening</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">Unplaced</div>
+          <div class="stat-card-val" style="color: #f87171;">180</div>
+          <div class="stat-card-sub">Priority Training</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 4: INDUSTRY / HR DASHBOARD ==================== -->
+    <section class="view-panel" id="panel-hr-dashboard">
+      <div style="margin-bottom: 24px;">
+        <h2 style="font-size: 1.6rem; font-weight: 800;"><i class="fa-solid fa-building-user" style="color:var(--primary-cyan);"></i> TCS Global - HR Portal</h2>
+        <p style="color: var(--text-muted);">Campus Hiring Recruitment Dashboard</p>
+      </div>
+
+      <div class="dashboard-grid-4">
+        <div class="stat-card">
+          <div class="stat-card-title">Active Drives</div>
+          <div class="stat-card-val">3</div>
+          <div class="stat-card-sub">Open Positions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">Total Applicants</div>
+          <div class="stat-card-val" style="color: var(--primary-cyan);">248</div>
+          <div class="stat-card-sub">Screened Profiles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">Shortlisted</div>
+          <div class="stat-card-val" style="color: var(--accent-amber);">86</div>
+          <div class="stat-card-sub">Assessment Passed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">Hired</div>
+          <div class="stat-card-val" style="color: var(--accent-green);">32</div>
+          <div class="stat-card-sub">Offers Extended</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 5: MY PROFILE ==================== -->
+    <section class="view-panel" id="panel-profile">
+      <div class="stat-card" style="display:flex; align-items:center; gap:20px; margin-bottom:24px;">
+        <div style="width:70px; height:70px; border-radius:50%; background:var(--primary-cyan); display:flex; align-items:center; justify-content:center; font-size:2rem; color:#fff;">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div>
+          <h2 style="font-size:1.5rem; color:#fff; margin-bottom:4px;">Tanmay Patel</h2>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Roll No: CCS172024001 | Computer Science Engineering (Sem 6)</p>
+          <p style="color:var(--primary-cyan); font-weight:700; margin-top:4px;">College: XYZ College of Engineering | CGPA: 8.56</p>
+        </div>
+      </div>
+
+      <div class="data-table-container">
+        <h3 style="color:#fff; margin-bottom:15px;">Academic Record</h3>
+        <table class="data-table">
+          <thead><tr><th>Degree / Exam</th><th>Year</th><th>CGPA / Score</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>10th Standard</td><td>2020</td><td>89%</td><td><span class="status-pill status-placed">Verified</span></td></tr>
+            <tr><td>12th Standard</td><td>2022</td><td>91%</td><td><span class="status-pill status-placed">Verified</span></td></tr>
+            <tr><td>B.Tech CSE (Sem 6)</td><td>2026</td><td>8.56 CGPA</td><td><span class="status-pill status-shortlisted">Active</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 6: SKILL GAP ANALYSIS ==================== -->
+    <section class="view-panel" id="panel-skill-gap">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-chart-pie" style="color:var(--primary-cyan);"></i> Skill Gap Analysis</h2>
+      <div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px;">
+        <div class="stat-card">
+          <h3 style="margin-bottom:15px; color:#fff;">Your Technical & Soft Skills</h3>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
+            <span class="tag tag-role">Java</span><span class="tag tag-role">Python</span><span class="tag tag-role">C++</span><span class="tag tag-role">DSA</span><span class="tag tag-role">SQL</span><span class="tag tag-role">HTML/CSS</span>
+          </div>
+          <h3 style="margin-bottom:15px; color:#f87171;">Missing Skills for Target Companies</h3>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="tag tag-eligibility" style="background:rgba(239, 68, 68, 0.2); color:#f87171;">System Design</span>
+            <span class="tag tag-eligibility" style="background:rgba(239, 68, 68, 0.2); color:#f87171;">Docker</span>
+            <span class="tag tag-eligibility" style="background:rgba(239, 68, 68, 0.2); color:#f87171;">AWS Cloud</span>
+            <span class="tag tag-eligibility" style="background:rgba(239, 68, 68, 0.2); color:#f87171;">Git / Version Control</span>
+          </div>
+        </div>
+        <div class="stat-card" style="text-align:center;">
+          <h3 style="margin-bottom:15px; color:#fff;">Overall Skill Match</h3>
+          <div style="font-size:3rem; font-weight:800; color:var(--primary-cyan); margin:15px 0;">65%</div>
+          <p style="color:var(--text-muted); font-size:0.85rem;">Complete 2 recommended practice modules to reach 85%+</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 7: LEARNING ROADMAP ==================== -->
+    <section class="view-panel" id="panel-roadmap">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-route" style="color:var(--primary-cyan);"></i> Personalized Learning Roadmap</h2>
+      <div class="roadmap-steps">
+        <div class="roadmap-step-item active">
+          <div class="step-circle">1</div>
+          <span style="font-size:0.85rem; color:#fff;">Foundation</span>
+        </div>
+        <div class="roadmap-step-item active">
+          <div class="step-circle">2</div>
+          <span style="font-size:0.85rem; color:#fff;">Core Skills</span>
+        </div>
+        <div class="roadmap-step-item">
+          <div class="step-circle">3</div>
+          <span style="font-size:0.85rem; color:var(--text-muted);">Advanced</span>
+        </div>
+        <div class="roadmap-step-item">
+          <div class="step-circle">4</div>
+          <span style="font-size:0.85rem; color:var(--text-muted);">Projects</span>
+        </div>
+        <div class="roadmap-step-item">
+          <div class="step-circle">5</div>
+          <span style="font-size:0.85rem; color:var(--text-muted);">Ready</span>
+        </div>
+      </div>
+
+      <div class="stat-card" style="margin-top:30px;">
+        <h3 style="color:#fff; margin-bottom:10px;">AI Recommended Learning Target</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem;">Focus on <strong>System Design</strong> & <strong>Docker</strong> as they are in high demand for your target companies (TCS, Accenture, Infosys).</p>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 8: MY APPLICATIONS ==================== -->
+    <section class="view-panel" id="panel-applications">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-briefcase" style="color:var(--primary-cyan);"></i> My Applications Tracker</h2>
+      <div class="data-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Applied On</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>TCS</strong></td>
+              <td>SDE - Ninja / Digital</td>
+              <td><span class="status-pill status-shortlisted">Shortlisted</span></td>
+              <td>15 Jun 2026</td>
+              <td><button class="btn-card-apply" style="padding:4px 12px; font-size:0.8rem;">View Details</button></td>
+            </tr>
+            <tr>
+              <td><strong>Infosys</strong></td>
+              <td>Specialist Programmer</td>
+              <td><span class="status-pill status-applied">Applied</span></td>
+              <td>12 Jun 2026</td>
+              <td><button class="btn-card-apply" style="padding:4px 12px; font-size:0.8rem;">View Details</button></td>
+            </tr>
+            <tr>
+              <td><strong>Accenture</strong></td>
+              <td>Application Engineer</td>
+              <td><span class="status-pill status-interview">Interview Round</span></td>
+              <td>08 Jun 2026</td>
+              <td><button class="btn-card-apply" style="padding:4px 12px; font-size:0.8rem;">View Details</button></td>
+            </tr>
+            <tr>
+              <td><strong>Cognizant</strong></td>
+              <td>GenC Elevate</td>
+              <td><span class="status-pill status-selected">Selected</span></td>
+              <td>28 May 2026</td>
+              <td><button class="btn-card-apply" style="padding:4px 12px; font-size:0.8rem;">Offer Letter</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 9: CODING PRACTICE ==================== -->
+    <section class="view-panel" id="panel-coding">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-code" style="color:var(--primary-cyan);"></i> Coding Practice Sandbox</h2>
+      <div class="stat-card" style="margin-bottom:20px;">
+        <h3 style="color:#fff; margin-bottom:10px;">Graph Traversal & Shortest Path (Daily Challenge)</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;">Hot topic for Accenture & TCS campus drives. Implement Dijkstra's algorithm to find the minimum distance.</p>
+        <button class="btn-solve" id="solveChallengeBtn"><i class="fa-solid fa-play"></i> Launch Code Editor (+50 XP)</button>
+      </div>
+
+      <div class="data-table-container">
+        <h3 style="color:#fff; margin-bottom:15px;">Practice Problems</h3>
+        <table class="data-table">
+          <thead><tr><th>Title</th><th>Difficulty</th><th>Acceptance</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Two Sum</td><td><span class="status-pill status-placed">Easy</span></td><td>49.2%</td><td><button class="btn-card-apply" style="padding:4px 12px; font-size:0.8rem;">Solve</button></td></tr>
+            <tr><td>Reverse Linked List</td><td><span class="status-pill status-placed">Easy</span></td><td>74.1%</td><td><button class="btn-card-apply" style="padding:4px 12px; font-size:0.8rem;">Solve</button></td></tr>
+            <tr><td>Longest Substring Without Repeating Characters</td><td><span class="status-pill status-shortlisted">Medium</span></td><td>34.5%</td><td><button class="btn-card-apply" style="padding:4px 12px; font-size:0.8rem;">Solve</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 10: APTITUDE TEST ==================== -->
+    <section class="view-panel" id="panel-aptitude">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-brain" style="color:var(--primary-cyan);"></i> Aptitude Mock Modules</h2>
+      <div class="dashboard-grid-4">
+        <div class="stat-card">
+          <h4>Quantitative Aptitude - Set 1</h4>
+          <p style="color:var(--text-muted); font-size:0.8rem; margin:8px 0;">30 mins | 25 Questions</p>
+          <button class="btn-card-apply" style="width:100%;">Start Mock Test</button>
+        </div>
+        <div class="stat-card">
+          <h4>Logical Reasoning - Set 1</h4>
+          <p style="color:var(--text-muted); font-size:0.8rem; margin:8px 0;">30 mins | 25 Questions</p>
+          <button class="btn-card-apply" style="width:100%;">Start Mock Test</button>
+        </div>
+        <div class="stat-card">
+          <h4>Verbal Ability - Set 1</h4>
+          <p style="color:var(--text-muted); font-size:0.8rem; margin:8px 0;">30 mins | 25 Questions</p>
+          <button class="btn-card-apply" style="width:100%;">Start Mock Test</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 11: AI RESUME BUILDER ==================== -->
+    <section class="view-panel" id="panel-resume">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent-amber);"></i> AI Resume Builder & ATS Score</h2>
+      <div class="stat-card">
+        <h3 style="color:#fff; margin-bottom:10px;">ATS Strength Gauge: 88%</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;">Your resume is well optimized for top campus drives!</p>
+        <textarea id="resumeTextInput" rows="5" style="width:100%; background:#070b19; color:#fff; border:1px solid var(--border-color); padding:10px; border-radius:8px;" placeholder="Paste resume content..."></textarea>
+        <button id="runAtsCheckBtn" style="margin-top:10px; width:100%; background:var(--primary-cyan); color:#fff; padding:12px; border:none; border-radius:8px; font-weight:700; cursor:pointer;">Run AI ATS Analysis</button>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 12: PLACEMENT CALENDAR ==================== -->
+    <section class="view-panel" id="panel-calendar">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-calendar-days" style="color:var(--primary-cyan);"></i> Placement Event Calendar (June 2026)</h2>
+      <div class="calendar-grid">
+        <div class="calendar-day-head">Sun</div><div class="calendar-day-head">Mon</div><div class="calendar-day-head">Tue</div><div class="calendar-day-head">Wed</div><div class="calendar-day-head">Thu</div><div class="calendar-day-head">Fri</div><div class="calendar-day-head">Sat</div>
+        <div class="calendar-day-cell">1</div><div class="calendar-day-cell">2</div><div class="calendar-day-cell">3</div><div class="calendar-day-cell">4</div><div class="calendar-day-cell">5</div><div class="calendar-day-cell">6</div><div class="calendar-day-cell">7</div>
+        <div class="calendar-day-cell">8</div><div class="calendar-day-cell">9</div><div class="calendar-day-cell event">10<br><span style="font-size:0.7rem; color:var(--primary-cyan);">Infosys Drive</span></div><div class="calendar-day-cell">11</div><div class="calendar-day-cell">12</div><div class="calendar-day-cell">13</div><div class="calendar-day-cell">14</div>
+        <div class="calendar-day-cell">15</div><div class="calendar-day-cell event">16<br><span style="font-size:0.7rem; color:var(--accent-amber);">TCS Interview</span></div><div class="calendar-day-cell">17</div><div class="calendar-day-cell">18</div><div class="calendar-day-cell">19</div><div class="calendar-day-cell">20</div><div class="calendar-day-cell">21</div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 13: COLLEGE STUDENTS ==================== -->
+    <section class="view-panel" id="panel-college-students">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-users" style="color:var(--primary-cyan);"></i> College Student Directory</h2>
+      <div class="data-table-container">
+        <table class="data-table">
+          <thead><tr><th>Name</th><th>Branch</th><th>CGPA</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Rahul Sharma</td><td>CSE</td><td>8.54</td><td><span class="status-pill status-placed">Placed</span></td></tr>
+            <tr><td>Priya Patel</td><td>IT</td><td>8.20</td><td><span class="status-pill status-shortlisted">In Process</span></td></tr>
+            <tr><td>Amit Singh</td><td>ECE</td><td>7.85</td><td><span class="status-pill status-applied">Unplaced</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 14: ELIGIBLE STUDENTS ==================== -->
+    <section class="view-panel" id="panel-company-eligible">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-user-check" style="color:var(--primary-cyan);"></i> Eligible Students Criteria Matching</h2>
+      <div class="data-table-container">
+        <table class="data-table">
+          <thead><tr><th>Student Name</th><th>CGPA</th><th>Skills</th><th>Eligibility</th></tr></thead>
+          <tbody>
+            <tr><td>Rahul Sharma</td><td>8.56</td><td>Java, SQL, C++</td><td><span class="status-pill status-placed">Eligible</span></td></tr>
+            <tr><td>Neha Patel</td><td>8.22</td><td>Python, DSA, Web</td><td><span class="status-pill status-placed">Eligible</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 15: CREATE OPPORTUNITY ==================== -->
+    <section class="view-panel" id="panel-create-opportunity">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-plus-circle" style="color:var(--primary-cyan);"></i> Post New Hiring Drive</h2>
+      <div class="stat-card" style="max-width:600px;">
+        <label style="display:block; margin-bottom:8px;">Job Title / Role:</label>
+        <input type="text" style="width:100%; background:#070b19; color:#fff; padding:10px; border-radius:8px; border:1px solid var(--border-color); margin-bottom:15px;" placeholder="e.g. Software Engineer (SDE-1)">
+        <label style="display:block; margin-bottom:8px;">Package CTC (LPA):</label>
+        <input type="text" style="width:100%; background:#070b19; color:#fff; padding:10px; border-radius:8px; border:1px solid var(--border-color); margin-bottom:15px;" placeholder="e.g. 8.5 - 12.0 LPA">
+        <button class="btn-card-apply" style="width:100%;">Publish Opportunity</button>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 16: NOTIFICATIONS & SETTINGS ==================== -->
+    <section class="view-panel" id="panel-notifications">
+      <h2 style="font-size:1.6rem; margin-bottom:20px;"><i class="fa-solid fa-gear" style="color:var(--primary-cyan);"></i> Settings & Alerts</h2>
+      <div class="stat-card"><p>Notification Preferences & Dark Theme Enabled</p></div>
+    </section>
+
+  </main>
+</div>
+
+  <!-- Modal Overlay -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle" class="modal-title">Details</h3>
+        <button id="modalCloseBtn" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="modalBody" class="modal-body">Loading...</div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="toast-notification">
+    <i id="toastIcon" class="fa-solid fa-circle-check" style="color:#34d399;"></i>
+    <span id="toastMessage">Success</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
